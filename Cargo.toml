@@ -1,0 +1,17 @@
+[package]
+name        = "loris"
+authors     = ["Robert Jacobson <rljacobson@gmail.com>"]
+version     = "0.1.0"
+edition     = "2021"
+description = "A TUI REPL front end for the loris term rewriting system, lorislib."
+categories  = ["algorithms", "compilers", "parsing", "mathematics"]
+keywords    = ["computer algebra", "Mathematica", "pattern matching", "term rewriting"]
+homepage    = "http://www.github.com/rljacobson/loris"
+repository  = "http://www.github.com/rljacobson/loris"
+license     = "BSD"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+lorislib = {path = "../lorislib"}
+rustyline = "10.0.0"
