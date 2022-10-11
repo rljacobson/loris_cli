@@ -9,7 +9,9 @@ use rustyline::{Editor, Result as RLResult};
 
 use lorislib::{
   Parser,
-  Context
+  Context,
+  logging::set_verbosity,
+  evaluate,
 };
 
 
@@ -37,7 +39,9 @@ impl Session {
     match result {
 
       Ok(expression) => {
-        println!("{}\n", expression);
+        let result = evaluate(expression, &mut self.context);
+        println!("{}\n", result);
+
         Ok(())
       }
 
@@ -53,7 +57,7 @@ impl Session {
 
 fn main() -> RLResult<()> {
   println!("\nLoris term rewriting system version 0.1.0.\n\n");
-
+  // set_verbosity(5);
   let mut session = Session::new();
 
   // Todo: replace `()` with completer.
