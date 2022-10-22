@@ -8,22 +8,22 @@ use rustyline::error::ReadlineError;
 use rustyline::{Editor, Result as RLResult};
 
 use lorislib::{
-  Parser,
+  parse,
   Context,
-  logging::set_verbosity,
   evaluate,
 };
+#[allow(unused_imports)]
+use lorislib::logging::set_verbosity;
 
 
 struct Session {
-  parser: Parser,
   context: Context
+  // todo: implement input and output history
 }
 
 impl Default for Session {
   fn default() -> Session {
     Session {
-      parser: Parser::new(),
       context: Context::new_global_context()
     }
   }
@@ -35,7 +35,7 @@ impl Session {
   }
 
   fn process_input(&mut self, input: &str) -> Result<(), String> {
-    let result = self.parser.parse(input);
+    let result = parse(input);
     match result {
 
       Ok(expression) => {
@@ -57,22 +57,22 @@ impl Session {
 
 fn main() -> RLResult<()> {
   println!("\nLoris term rewriting system version 0.1.0.\n\n");
-  // set_verbosity(5);
+  // set_verbosity(4);
   let mut session = Session::new();
 
   // Todo: replace `()` with completer.
   let mut rl = Editor::<()>::new()?;
-  /*
+
   if rl.load_history("history.txt").is_err() {
     println!("No previous history.");
   }
-  */
 
   loop {
     let readline = rl.readline(":> "); // Prompt doesn't work within IntelliJ.
     match readline {
       Ok(line) => {
-        // rl.add_history_entry(line.as_str());
+        rl.add_history_entry(line.as_str());
+        println!("\n");
 
         // Check for meta commands.
         match line.as_str() {
@@ -107,7 +107,7 @@ fn main() -> RLResult<()> {
     } // end match readline
   } // end loop
 
-  // rl.save_history("history.txt")
+  rl.save_history("history.txt")?;
   Ok(())
 }
 
@@ -116,8 +116,19 @@ fn main() -> RLResult<()> {
 
 #[cfg(test)]
 mod tests {
+  use crate::Session;
+  #[allow(unused_imports)]
+  use lorislib::logging::set_verbosity;
+
   #[test]
-  fn it_works() {
-    assert_eq!(2 + 2, 4);
+  fn test_session() {
+    println!("\nLoris term rewriting system version 0.1.0.\n\n");
+    // set_verbosity(5);
+    let mut session = Session::new();
+
+    let line = "2/4";
+
+    assert_eq!(session.process_input(line), Ok(()));
+
   }
 }
