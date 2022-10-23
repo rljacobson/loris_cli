@@ -1,5 +1,5 @@
 [package]
-name        = "loris"
+name        = "loris-cli"
 authors     = ["Robert Jacobson <rljacobson@gmail.com>"]
 version     = "0.1.0"
 edition     = "2021"

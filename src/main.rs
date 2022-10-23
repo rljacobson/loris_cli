@@ -57,14 +57,14 @@ impl Session {
 
 fn main() -> RLResult<()> {
   println!("\nLoris term rewriting system version 0.1.0.\n\n");
-  // set_verbosity(4);
   let mut session = Session::new();
+  set_verbosity(4);
 
   // Todo: replace `()` with completer.
   let mut rl = Editor::<()>::new()?;
 
   if rl.load_history("history.txt").is_err() {
-    println!("No previous history.");
+    // println!("No previous history.");
   }
 
   loop {
