@@ -5,7 +5,7 @@ A minimal REPL executable.
  */
 
 use rustyline::error::ReadlineError;
-use rustyline::{Editor, Result as RLResult};
+use rustyline::{DefaultEditor, Result as RLResult};
 
 use lorislib::{
   parse,
@@ -64,7 +64,7 @@ fn main() -> RLResult<()> {
   // set_verbosity(4);
 
   // Todo: replace `()` with completer.
-  let mut rl = Editor::<()>::new()?;
+  let mut rl = DefaultEditor::new()?;
 
   if rl.load_history("history.txt").is_err() {
     // println!("No previous history.");
@@ -126,7 +126,7 @@ mod tests {
   #[test]
   fn test_session() {
     println!("\nLoris term rewriting system version 0.1.0.\n\n");
-    // set_verbosity(5);
+    set_verbosity(5);
     let mut session = Session::new();
 
     let line = "2/4";

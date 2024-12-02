@@ -15,4 +15,4 @@ license     = "BSD"
 [dependencies]
 lorislib = {path = "../lorislib"}
 #lorislib = {path = "../lorislib"}
-rustyline = "10.0.0"
+rustyline = "15.0.0"
