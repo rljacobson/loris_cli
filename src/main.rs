@@ -38,6 +38,7 @@ impl Session {
   }
 
   fn process_input(&mut self, input: &str) -> Result<(), String> {
+    // set_verbosity(5);
     let result = parse(input);
     match result {
 
@@ -61,7 +62,7 @@ impl Session {
 fn main() -> RLResult<()> {
   println!("\nLoris term rewriting system version 0.1.0.\n\n");
   let mut session = Session::new();
-  // set_verbosity(4);
+  set_verbosity(10);
 
   // Todo: replace `()` with completer.
   let mut rl = DefaultEditor::new()?;
@@ -74,7 +75,7 @@ fn main() -> RLResult<()> {
     let readline = rl.readline(":> "); // Prompt doesn't work within IntelliJ.
     match readline {
       Ok(line) => {
-        rl.add_history_entry(line.as_str());
+        _ = rl.add_history_entry(line.as_str());
         println!("\n");
 
         // Check for meta commands.
@@ -126,6 +127,10 @@ mod tests {
   #[test]
   fn test_session() {
     println!("\nLoris term rewriting system version 0.1.0.\n\n");
+    match std::env::current_dir() {
+      Ok(path) => println!("Current directory: {}", path.display()),
+      Err(e) => eprintln!("Error getting current directory: {}", e),
+    }
     set_verbosity(5);
     let mut session = Session::new();
 
