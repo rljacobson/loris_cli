@@ -5,15 +5,12 @@ A minimal REPL executable.
  */
 
 use rustyline::error::ReadlineError;
-use rustyline::{Editor, Result as RLResult};
+use rustyline::{DefaultEditor, Result as RLResult};
 
 use lorislib::{
   parse,
   Context,
-  evaluate,
-  // DisplayForm,
-  // Formattable,
-  // ExpressionFormatter
+  evaluate
 };
 #[allow(unused_imports)]
 use lorislib::logging::set_verbosity;
@@ -42,9 +39,10 @@ impl Session {
     match result {
 
       Ok(expression) => {
+        set_verbosity(5);
         let result = evaluate(expression, &mut self.context);
         println!("{}\n", result);
-
+        set_verbosity(1);
         Ok(())
       }
 
@@ -60,11 +58,10 @@ impl Session {
 
 fn main() -> RLResult<()> {
   println!("\nLoris term rewriting system version 0.1.0.\n\n");
-  set_verbosity(4);
   let mut session = Session::new();
 
   // Todo: replace `()` with completer.
-  let mut rl = Editor::<()>::new()?;
+  let mut rl = DefaultEditor::new()?;
 
   if rl.load_history("history.txt").is_err() {
     // println!("No previous history.");
@@ -74,7 +71,7 @@ fn main() -> RLResult<()> {
     let readline = rl.readline(":> "); // Prompt doesn't work within IntelliJ.
     match readline {
       Ok(line) => {
-        rl.add_history_entry(line.as_str());
+        _ = rl.add_history_entry(line.as_str());
         println!("\n");
 
         // Check for meta commands.
@@ -126,7 +123,11 @@ mod tests {
   #[test]
   fn test_session() {
     println!("\nLoris term rewriting system version 0.1.0.\n\n");
-    // set_verbosity(5);
+    match std::env::current_dir() {
+      Ok(path) => println!("Current directory: {}", path.display()),
+      Err(e) => eprintln!("Error getting current directory: {}", e),
+    }
+    set_verbosity(5);
     let mut session = Session::new();
 
     let line = "2/4";
