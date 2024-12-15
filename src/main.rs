@@ -10,10 +10,7 @@ use rustyline::{DefaultEditor, Result as RLResult};
 use lorislib::{
   parse,
   Context,
-  evaluate,
-  // DisplayForm,
-  // Formattable,
-  // ExpressionFormatter
+  evaluate
 };
 #[allow(unused_imports)]
 use lorislib::logging::set_verbosity;
@@ -38,14 +35,14 @@ impl Session {
   }
 
   fn process_input(&mut self, input: &str) -> Result<(), String> {
-    // set_verbosity(5);
     let result = parse(input);
     match result {
 
       Ok(expression) => {
+        set_verbosity(5);
         let result = evaluate(expression, &mut self.context);
         println!("{}\n", result);
-
+        set_verbosity(1);
         Ok(())
       }
 
@@ -62,7 +59,6 @@ impl Session {
 fn main() -> RLResult<()> {
   println!("\nLoris term rewriting system version 0.1.0.\n\n");
   let mut session = Session::new();
-  set_verbosity(10);
 
   // Todo: replace `()` with completer.
   let mut rl = DefaultEditor::new()?;
